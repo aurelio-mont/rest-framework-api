@@ -18,9 +18,11 @@ from . import settings
 from django.contrib import admin
 from django.urls import path, include
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('products.api.routers')),
+    path('accounts/', include('auth_users.urls')),
+    path('products/', include('products.api.routers')),
 ]
 
 if settings.DEBUG:
