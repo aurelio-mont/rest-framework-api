@@ -6,10 +6,14 @@ from auth_users.models import CustomUser as User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
     class Meta:
+        
         model = User
-        fields = ['email']
+        fields = ['id', 'email', 'full_name', 'date_of_birth']
 
+    def get_full_name(self, obj):
+        return '{} {} {}'.format(obj.first_name, obj.last_name, obj.sur_name) 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:

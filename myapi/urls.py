@@ -17,9 +17,10 @@ Including another URLconf
 from . import settings 
 from django.contrib import admin
 from django.urls import path, include
-
+from .vews import HelloView
 
 urlpatterns = [
+    path('', HelloView.as_view()),
     path('admin/', admin.site.urls),
     path('accounts/', include('auth_users.urls')),
     path('products/', include('products.api.routers')),
