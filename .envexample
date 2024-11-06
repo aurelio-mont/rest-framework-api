@@ -1,6 +1,2 @@
 SECRET_KEY=#5408b_-+5pf6#a#b%%b!fbu$cj14b2h
-HOST_DB=localhost
-PORT_DB=5432
-NAME_DB=storedb
-USER_DB=postgres
-PASSWORD_DB=pswrd
+DATABASE_URL=postgresql://

@@ -21,15 +21,21 @@ class UserRegisterView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        tokens = get_tokens_for_user(user=user)
+        print(serializer.is_valid())
+        if serializer.is_valid():
+            user = serializer.save()
+            tokens = get_tokens_for_user(user=user)
+            data = {
+                'message': _('You are successfully Register'),
+                'user': UserSerializer(user, context=self.get_serializer_context()).data,
+                'tokens': tokens
+            }
+            return Response(data=data, status=status.HTTP_201_CREATED, )
         data = {
-            'message': _('You are successfully Register'),
-            'user': UserSerializer(user, context=self.get_serializer_context()).data,
-            'tokens': tokens
+            'message': _('User is not created'),
+            'errors': serializer.errors
         }
-        return Response(data=data, status=status.HTTP_201_CREATED, )
+        return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLoginView(generics.GenericAPIView):
     permission_classes = (AllowAny, )
@@ -37,15 +43,20 @@ class UserLoginView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
-        tokens = get_tokens_for_user(user=user)
+        if serializer.is_valid():
+            user = serializer.validated_data
+            tokens = get_tokens_for_user(user=user)
+            data = {
+                'message': _('You are successfully Login'),
+                'user': UserSerializer(user, context=self.get_serializer_context()).data,
+                'tokens': tokens
+            }
+            return Response(data=data, status=status.HTTP_200_OK, )
         data = {
-            'message': _('You are successfully Login'),
-            'user': UserSerializer(user, context=self.get_serializer_context()).data,
-            'tokens': tokens
+            'message': _('Credentials are not valid'),
+            'errors': serializer.errors
         }
-        return Response(data=data, status=status.HTTP_200_OK, )
+        return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
     
 class UserProfileView(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated, )
