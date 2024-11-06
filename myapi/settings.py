@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_auth',
     'allauth',
     'auth_users',
+    'blog',
     'products',
 ]
 
