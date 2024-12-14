@@ -23,6 +23,7 @@ urlpatterns = [
     path('', HelloView.as_view()),
     path('admin/', admin.site.urls),
     path('accounts/', include('auth_users.urls')),
+    path('blog/', include('blog.urls', namespace='blog')),
     path('products/', include('products.api.routers')),
 ]
 
